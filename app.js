@@ -21,7 +21,7 @@ const INITIAL_DATA = [
       'Briefing adopted by all founders within 4 weeks of launch',
       'Positive NPS from recipients after 4 sessions',
     ],
-    notes: 'Consider integrating with Google Calendar to auto-trigger. ahead-lab dashboard could serve as the data source. Start with a simple n8n workflow before productising.',
+    notes: 'Consider integrating with Google Calendar to auto-trigger. This dashboard could serve as the data source. Start with a simple n8n workflow before productising.',
     repoUrl: '',
     appUrl: '',
     createdAt: '13.04.2026',
@@ -37,7 +37,7 @@ const INITIAL_DATA = [
     department: 'Marketing',
     stakeholders: ['Head of Marketing', 'Brand Manager', 'E-commerce Team'],
     painpoint: 'Writing product descriptions, social captions, and PDP copy for each SKU is repetitive, time-consuming, and inconsistent across channels — causing delays and brand drift.',
-    description: 'A simple, loveable, complete web app where staff enter product details (name, ingredients, claims, tone) and receive AI-generated copy variants: product descriptions, social captions, and PDP copy — all following the ahead brand voice.',
+    description: 'A simple, loveable, complete web app where staff enter product details (name, ingredients, claims, tone) and receive AI-generated copy variants: product descriptions, social captions, and PDP copy — all following the ACME brand voice guidelines.',
     userStory: 'As a marketing manager, I want to generate on-brand product copy in under 10 minutes so I can focus on strategy rather than repetitive writing tasks.',
     benchmarks: 'Current time per SKU copy set: 2–4 hours manual. Competitors using AI copy tools report 70–85% time reduction. Jasper/Copy.ai adoption in CPG sector growing at 40% YoY.',
     successMetrics: [
@@ -88,7 +88,7 @@ const STAT_LABEL = { idea: 'Idea', exploring: 'Exploring', prototyping: 'Prototy
 const TYPE_BADGE = { 'slc-app': 'b-slc', microapp: 'b-micro', automation: 'b-auto' };
 const STAT_BADGE = { idea: 'b-idea', exploring: 'b-exp', prototyping: 'b-proto', live: 'b-live' };
 const DOT_CLS    = { 'slc-app': 'ds', microapp: 'dm', automation: 'da' };
-const DOT_COLOR  = { 'slc-app': '#8345BA', microapp: '#C07BA8', automation: '#C9A800' };
+const DOT_COLOR  = { 'slc-app': '#2E2E2E', microapp: '#6B6B6B', automation: '#A3A3A3' };
 
 // ═══════════════════════════════════════════════════════════════
 // STATE
@@ -103,12 +103,12 @@ let modalState  = null; // { mode: 'view'|'edit'|'add', id: string|null }
 // ═══════════════════════════════════════════════════════════════
 
 function loadData() {
-  const raw = localStorage.getItem('ahead-lab-v1');
+  const raw = localStorage.getItem('acme-ai-lab-v1');
   useCases = raw ? JSON.parse(raw) : JSON.parse(JSON.stringify(INITIAL_DATA));
 }
 
 function saveData() {
-  localStorage.setItem('ahead-lab-v1', JSON.stringify(useCases));
+  localStorage.setItem('acme-ai-lab-v1', JSON.stringify(useCases));
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -477,7 +477,7 @@ function renderMatrix() {
 
     var ldot = document.createElement('span');
     ldot.className = 'l-dot';
-    ldot.style.background = DOT_COLOR[uc.type] || '#E8D400';
+    ldot.style.background = DOT_COLOR[uc.type] || '#A3A3A3';
 
     var lnum = document.createElement('span');
     lnum.style.cssText = 'color:var(--text-faint);margin-right:4px;font-size:0.68rem;font-family:"JetBrains Mono",monospace;';
@@ -499,7 +499,7 @@ function renderMatrix() {
     dot.style.top        = pos.y + '%';
     dot.style.width      = '32px';
     dot.style.height     = '32px';
-    dot.style.background = DOT_COLOR[uc.type] || '#E8D400';
+    dot.style.background = DOT_COLOR[uc.type] || '#A3A3A3';
     dot.textContent      = String(i + 1);
 
     dot.addEventListener('mouseenter', function(e) {
@@ -1107,15 +1107,15 @@ function deleteUseCase(id) {
 function openPasteOverlay() {
   var overlay = document.createElement('div');
   overlay.id = 'paste-overlay';
-  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(45,27,66,0.6);backdrop-filter:blur(3px);z-index:200;display:flex;align-items:center;justify-content:center;padding:1.5rem;';
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(46,46,46,0.6);backdrop-filter:blur(3px);z-index:200;display:flex;align-items:center;justify-content:center;padding:1.5rem;';
 
   var box = document.createElement('div');
-  box.style.cssText = 'background:var(--surface);border:1px solid var(--border-lg);border-radius:var(--radius-lg);width:100%;max-width:600px;box-shadow:0 32px 80px rgba(131,69,186,0.15);';
+  box.style.cssText = 'background:var(--surface);border:1px solid var(--border-lg);border-radius:var(--radius-lg);width:100%;max-width:600px;box-shadow:0 32px 80px rgba(46,46,46,0.15);';
 
   var hdr = document.createElement('div');
   hdr.style.cssText = 'padding:1.25rem 1.5rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;';
   var hdrTitle = document.createElement('div');
-  hdrTitle.style.cssText = 'font-weight:700;font-size:0.95rem;color:var(--purple);';
+  hdrTitle.style.cssText = 'font-weight:700;font-size:0.95rem;color:var(--ink);';
   hdrTitle.textContent = 'Paste from AI';
   var hdrX = document.createElement('button');
   hdrX.className = 'btn btn-ghost btn-sm btn-icon';
