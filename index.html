@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ai-head</title>
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@800;900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<aside class="sidebar">
+  <div class="logo-wrap">
+    <img src="ahead-logo.svg" alt="ahead" class="logo-img">
+    <div class="logo-tagline">Applied AI Lab</div>
+  </div>
+  <nav class="nav">
+    <div class="nav-section-label">Navigation</div>
+    <div class="nav-item active" data-view="overview" onclick="navigate('overview')">
+      <svg class="nav-icon" viewBox="0 0 16 16" fill="currentColor"><path d="M8.707.293a1 1 0 0 0-1.414 0l-6 6A1 1 0 0 0 1 7v7a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1v-4h2v4a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1V7a1 1 0 0 0-.293-.707l-6-6z"/></svg>
+      Overview
+    </div>
+    <div class="nav-item" data-view="usecases" onclick="navigate('usecases')">
+      <svg class="nav-icon" viewBox="0 0 16 16" fill="currentColor"><path d="M2 2a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V2zm1 0v12h10V2H3zm2 2h6v1H5V4zm0 2.5h6v1H5v-1zm0 2.5h4v1H5V9z"/></svg>
+      Use Cases
+    </div>
+    <div class="nav-item" data-view="matrix" onclick="navigate('matrix')">
+      <svg class="nav-icon" viewBox="0 0 16 16" fill="currentColor"><path d="M1 1h6v6H1V1zm0 8h6v6H1V9zm8-8h6v6H9V1zm0 8h6v6H9V9z"/></svg>
+      Priority Matrix
+    </div>
+    <div class="nav-section-label" style="margin-top:1rem;">Quick Add</div>
+    <div class="nav-item" onclick="openModal(null,'add')">
+      <svg class="nav-icon" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1a1 1 0 0 1 1 1v5h5a1 1 0 0 1 0 2H9v5a1 1 0 0 1-2 0V9H2a1 1 0 0 1 0-2h5V2a1 1 0 0 1 1-1z"/></svg>
+      New Use Case
+    </div>
+  </nav>
+  <div class="sidebar-footer">
+    <div>ahead-lab v0.1</div>
+    <div id="footer-date"></div>
+    <div style="margin-top:0.3rem;font-size:0.6rem;">Applied AI · ahead nutrition</div>
+  </div>
+</aside>
+
+<main class="main">
+
+  <!-- Overview -->
+  <div id="view-overview" class="view active">
+    <div class="page-header">
+      <div>
+        <div class="page-title">Lab Overview</div>
+        <div class="page-subtitle" id="ov-date"></div>
+      </div>
+      <button class="btn btn-primary" onclick="openModal(null,'add')">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1a1 1 0 0 1 1 1v5h5a1 1 0 0 1 0 2H9v5a1 1 0 0 1-2 0V9H2a1 1 0 0 1 0-2h5V2a1 1 0 0 1 1-1z"/></svg>
+        Add Use Case
+      </button>
+    </div>
+    <div class="stats-row">
+      <div class="stat-card hi">
+        <div class="stat-label">Total Use Cases</div>
+        <div class="stat-value" id="s-total">0</div>
+        <div class="stat-sub">across all departments</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Live</div>
+        <div class="stat-value" id="s-live" style="color:#5C2E8A">0</div>
+        <div class="stat-sub" id="s-live-sub"></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">In Progress</div>
+        <div class="stat-value" id="s-inprogress" style="color:#8345BA">0</div>
+        <div class="stat-sub">exploring + prototyping</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Ideas</div>
+        <div class="stat-value" id="s-ideas" style="color:var(--text-muted)">0</div>
+        <div class="stat-sub">not yet started</div>
+      </div>
+    </div>
+    <div class="two-col">
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">Use Case Registry</span>
+          <button class="btn btn-ghost btn-sm" onclick="navigate('usecases')">View all →</button>
+        </div>
+        <table class="uc-table">
+          <thead>
+            <tr>
+              <th>Use Case</th>
+              <th>Type</th>
+              <th>Status</th>
+              <th>Impact</th>
+            </tr>
+          </thead>
+          <tbody id="ov-tbody"></tbody>
+        </table>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">Priority Matrix</span>
+          <button class="btn btn-ghost btn-sm" onclick="navigate('matrix')">Full view →</button>
+        </div>
+        <div class="card-body" style="padding-bottom:1.5rem;">
+          <div class="mini-matrix-outer">
+            <div class="matrix-axis-y">Impact →</div>
+            <div class="mini-matrix" id="mini-matrix">
+              <div class="mq mq-tl"><span>Quick Wins</span></div>
+              <div class="mq mq-tr"><span>Strategic</span></div>
+              <div class="mq mq-bl"><span>Maybe Later</span></div>
+              <div class="mq mq-br"><span>Avoid</span></div>
+            </div>
+            <div class="matrix-axis-x">Effort →</div>
+          </div>
+          <div style="display:flex;gap:1rem;justify-content:center;margin-top:0.5rem;flex-wrap:wrap;">
+            <div style="display:flex;align-items:center;gap:5px;font-size:0.68rem;color:var(--text-muted);"><span style="width:9px;height:9px;border-radius:50%;background:#8345BA;display:inline-block;"></span> SLC App</div>
+            <div style="display:flex;align-items:center;gap:5px;font-size:0.68rem;color:var(--text-muted);"><span style="width:9px;height:9px;border-radius:50%;background:#C07BA8;display:inline-block;"></span> Microapp</div>
+            <div style="display:flex;align-items:center;gap:5px;font-size:0.68rem;color:var(--text-muted);"><span style="width:9px;height:9px;border-radius:50%;background:#C9A800;display:inline-block;"></span> Automation</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Use Cases -->
+  <div id="view-usecases" class="view">
+    <div class="page-header">
+      <div>
+        <div class="page-title">Use Case Registry</div>
+        <div class="page-subtitle">All AI initiatives — SLC Apps, Microapps, and Automations</div>
+      </div>
+      <button class="btn btn-primary" onclick="openModal(null,'add')">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1a1 1 0 0 1 1 1v5h5a1 1 0 0 1 0 2H9v5a1 1 0 0 1-2 0V9H2a1 1 0 0 1 0-2h5V2a1 1 0 0 1 1-1z"/></svg>
+        Add Use Case
+      </button>
+    </div>
+    <div class="toolbar">
+      <div class="search-wrap">
+        <svg class="search-icon" viewBox="0 0 16 16" fill="currentColor"><path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.099zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/></svg>
+        <input class="search-input" type="text" placeholder="Search use cases…" id="search-inp" oninput="filterUseCases()">
+      </div>
+      <select class="filter-sel" id="filter-type" onchange="filterUseCases()">
+        <option value="all">All Types</option>
+        <option value="slc-app">SLC App</option>
+        <option value="microapp">Microapp</option>
+        <option value="automation">Automation</option>
+      </select>
+      <select class="filter-sel" id="filter-status" onchange="filterUseCases()">
+        <option value="all">All Statuses</option>
+        <option value="idea">Idea</option>
+        <option value="exploring">Exploring</option>
+        <option value="prototyping">Prototyping</option>
+        <option value="live">Live</option>
+      </select>
+      <select class="filter-sel" id="filter-dept" onchange="filterUseCases()">
+        <option value="all">All Departments</option>
+      </select>
+    </div>
+    <div class="uc-grid" id="uc-grid"></div>
+  </div>
+
+  <!-- Matrix -->
+  <div id="view-matrix" class="view">
+    <div class="page-header">
+      <div>
+        <div class="page-title">Priority Matrix</div>
+        <div class="page-subtitle">Impact vs Effort — use this to guide build sequencing and stakeholder conversations</div>
+      </div>
+    </div>
+    <div class="matrix-layout">
+      <div class="matrix-outer">
+        <div class="matrix-canvas">
+          <div class="matrix-inner" id="matrix-inner">
+            <div class="fq fq-tl"><span>⚡ Quick Wins<br><span style="font-weight:400;font-size:0.55rem;opacity:0.7;">High impact, low effort</span></span></div>
+            <div class="fq fq-tr"><span>🎯 Strategic Bets<br><span style="font-weight:400;font-size:0.55rem;opacity:0.7;">High impact, high effort</span></span></div>
+            <div class="fq fq-bl"><span>📋 Maybe Later<br><span style="font-weight:400;font-size:0.55rem;opacity:0.7;">Low impact, low effort</span></span></div>
+            <div class="fq fq-br"><span>⚠️ Avoid<br><span style="font-weight:400;font-size:0.55rem;opacity:0.7;">Low impact, high effort</span></span></div>
+          </div>
+          <div class="f-axis-x">
+            <span>Low Effort</span><span>High Effort</span>
+          </div>
+          <div class="f-axis-y">
+            <span>High Impact</span><span>Low Impact</span>
+          </div>
+        </div>
+      </div>
+      <div class="matrix-legend">
+        <div class="legend-section">
+          <div class="legend-title">Use Cases</div>
+          <div id="matrix-legend-list"></div>
+        </div>
+        <div class="legend-section">
+          <div class="legend-section-label">Type</div>
+          <div class="legend-item"><span class="l-dot" style="background:#8345BA"></span> SLC App</div>
+          <div class="legend-item"><span class="l-dot" style="background:#C07BA8"></span> Microapp</div>
+          <div class="legend-item"><span class="l-dot" style="background:#C9A800"></span> Automation</div>
+        </div>
+        <div class="legend-section">
+          <div class="legend-section-label">Quadrants</div>
+          <div class="quadrant-legend">
+            <div class="ql-item"><span class="ql-swatch" style="background:rgba(131,69,186,0.2)"></span><span style="color:#8345BA;font-size:0.68rem;">Quick Wins</span></div>
+            <div class="ql-item"><span class="ql-swatch" style="background:rgba(255,238,30,0.2)"></span><span style="color:#7A6B00;font-size:0.68rem;">Strategic Bets</span></div>
+            <div class="ql-item"><span class="ql-swatch" style="background:rgba(244,195,215,0.3)"></span><span style="color:var(--text-faint);font-size:0.68rem;">Maybe Later</span></div>
+            <div class="ql-item"><span class="ql-swatch" style="background:rgba(185,28,74,0.15)"></span><span style="color:#B91C4A;font-size:0.68rem;">Avoid</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<div class="overlay" id="overlay">
+  <div class="modal" id="modal"></div>
+</div>
+
+<div class="tooltip" id="tooltip">
+  <div class="tooltip-title" id="tt-title"></div>
+  <div class="tooltip-sub" id="tt-sub"></div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
